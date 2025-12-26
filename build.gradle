@@ -19,7 +19,7 @@ group "org.techwasti.mn"
     developmentOnly 
 }*/
 
-/*dependencies {
+dependencies {
     annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
     annotationProcessor "io.micronaut:micronaut-inject-java"
     annotationProcessor "io.micronaut:micronaut-validation"
@@ -36,7 +36,7 @@ group "org.techwasti.mn"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "io.micronaut.test:micronaut-test-junit5"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-}*/
+}
 
 /*test.classpath += configurations.developmentOnly
 
