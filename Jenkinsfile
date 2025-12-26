@@ -11,7 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Compiling the code..'
-                sh './gradlew -Dhttp.proxyHost=10.115.208.19 -Dhttp.proxyPort=80 -Dhttps.proxyHost=10.115.208.19 -Dhttps.proxyPort=80 clean build -x test'
+                sh './gradlew -Dhttp.proxyHost=10.115.208.19 -Dhttp.proxyPort=80 -Dhttps.proxyHost=10.115.208.19 -Dhttps.proxyPort=80 clean build -x test --scan'
             }
         }
         stage('Test') {
