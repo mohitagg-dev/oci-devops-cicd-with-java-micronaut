@@ -11,7 +11,7 @@ group "org.techwasti.mn"
 
 repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
+    //maven { url "https://jcenter.bintray.com" }
 }
 
 /*configurations {
