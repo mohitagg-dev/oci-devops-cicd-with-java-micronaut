@@ -9,10 +9,10 @@ plugins {
 version "0.1"
 group "org.techwasti.mn"
 
-/*repositories {
+repositories {
     mavenCentral()
-    maven { url "https://jcenter.bintray.com" }
-}*/
+    //maven { url "https://jcenter.bintray.com" }
+}
 
 /*configurations {
     // for dependencies that are needed for development only
