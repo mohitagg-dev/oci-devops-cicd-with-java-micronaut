@@ -50,9 +50,9 @@ tasks.withType(JavaCompile){
     options.compilerArgs.add('-parameters')
 }
 
-shadowJar {
+/*shadowJar {
     mergeServiceFiles()
-}
+}*/
 
 tasks.withType(JavaExec) {
     classpath += configurations.developmentOnly
