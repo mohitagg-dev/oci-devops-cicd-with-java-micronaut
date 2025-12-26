@@ -9,6 +9,7 @@ pipeline {
             }
         }
         stage('Build') {
+            echo 'Configure Proxy..'
             environment {
                 HTTP_PROXY = "http://10.115.208.19:80"
                 HTTPS_PROXY = "http://10.115.208.19:80"
