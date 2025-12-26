@@ -9,13 +9,13 @@ pipeline {
             }
         }
         stage('Build') {
-            echo 'Configure Proxy..'
             environment {
                 HTTP_PROXY = "http://10.115.208.19:80"
                 HTTPS_PROXY = "http://10.115.208.19:80"
                 NO_PROXY = "127.0.0.1|localhost" 
             }
             steps {
+                echo 'Proxy Configured..'
                 echo 'Compiling the code..'
                 sh './gradlew clean build -x test'
             }
