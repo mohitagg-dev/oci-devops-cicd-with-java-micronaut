@@ -10,7 +10,7 @@ version "0.1"
 group "org.techwasti.mn"
 
 repositories {
-    mavenCentral()
+    //mavenCentral()
     //maven { url "https://jcenter.bintray.com" }
 }
 
