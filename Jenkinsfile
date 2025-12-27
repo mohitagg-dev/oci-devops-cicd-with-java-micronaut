@@ -27,9 +27,11 @@ pipeline {
                 }
             }*/
             steps {
+                script {
+                    def dockerHome = tool 'docker'
+                    env.PATH = "${dockerHome}/bin:${env.PATH}"
+                }
                 echo 'Create Container Image..'
-                def dockerHome = tool 'docker'
-                env.PATH = "${dockerHome}/bin:${env.PATH}"
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
