@@ -20,10 +20,6 @@ pipeline {
                 sh './gradlew test'
             }
         }
-         stage('Initialize'){
-            def dockerHome = tool 'docker'
-            env.PATH = "${dockerHome}/bin:${env.PATH}"
-            }
         stage('Create Image') {
             /*agent {
                 docker {
@@ -32,6 +28,8 @@ pipeline {
             }*/
             steps {
                 echo 'Create Container Image..'
+                def dockerHome = tool 'docker'
+                env.PATH = "${dockerHome}/bin:${env.PATH}"
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
