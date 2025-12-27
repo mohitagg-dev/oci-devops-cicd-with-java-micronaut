@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    //agent any
     agent {
         docker {
             image 'oraclelinux:8' // Using an Oracle Linux base image
