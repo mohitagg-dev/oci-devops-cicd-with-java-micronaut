@@ -36,7 +36,7 @@ pipeline {
                     //echo 'Jenkins user added to the docker group. Permissions updated.'
                 }
                 echo 'Getting Docker installation Path'
-                echo ${env.PATH}
+                echo "${env.PATH}"
                 echo 'Create Container Image..'
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
