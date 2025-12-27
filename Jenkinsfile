@@ -21,17 +21,13 @@ pipeline {
             }
         }
         stage('Create Image') {
-            /*agent {
-                docker {
-                    image 'node:24.12.0-alpine3.23'
-                }
-            }*/
             steps {
                 script {
                     def dockerHome = tool 'docker'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
                 }
                 echo 'Create Container Image..'
+                sh 'sudo usermod -a -G docker jenkins'
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
