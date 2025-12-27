@@ -21,9 +21,14 @@ pipeline {
             }
         }
         stage('Create Image') {
+            agent {
+                docker {
+                    
+                }
+            }
             steps {
                 echo 'Create Container Image..'
-                sh 'docker build --pull --rm -t java_micronaut_sample .'
+                //sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
         stage('Push Image') {
