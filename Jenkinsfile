@@ -32,8 +32,8 @@ pipeline {
                     def dockerHome = tool 'docker'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
                     /*sh 'getent group docker || groupadd docker'*/
-                    //sh 'usermod -aG docker $USER'
-                    //echo 'Jenkins user added to the docker group. Permissions updated.'
+                    sh 'usermod -aG docker jenkins'
+                    echo 'Jenkins user added to the docker group. Permissions updated.'
                 }
                 echo 'Getting Docker installation Path'
                 echo "${env.PATH}"
