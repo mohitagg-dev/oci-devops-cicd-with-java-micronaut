@@ -1,11 +1,5 @@
 pipeline {
-    //agent any
-    agent {
-        docker{
-            image 'docker:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     stages {
         stage('Checkout') {
@@ -34,6 +28,12 @@ pipeline {
                     /*sh 'getent group docker || groupadd docker'*/
                     //sh 'usermod -aG docker $USER'
                     //echo 'Jenkins user added to the docker group. Permissions updated.'
+                }
+                 agent {
+                    docker{
+                        image 'docker:latest'
+                        args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    }
                 }
                 echo 'Create Container Image..'
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
