@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    agent {
+        docker {
+            image 'oraclelinux:8' // Using an Oracle Linux base image
+            args '-u root' // Run the container as root initially to have permissions for usermod
+        }
+    }
 
     stages {
         stage('Checkout') {
