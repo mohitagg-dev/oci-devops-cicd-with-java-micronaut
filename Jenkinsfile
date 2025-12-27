@@ -27,7 +27,7 @@ pipeline {
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
                 }
                 echo 'Create Container Image..'
-                sh 'sudo usermod -a -G docker jenkins'
+                sh 'usermod -a -G docker jenkins'
                 sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
