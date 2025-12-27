@@ -23,7 +23,7 @@ pipeline {
         stage('Create Image') {
             agent {
                 docker {
-                    
+                    image 'node:24.12.0-alpine3.23'
                 }
             }
             steps {
