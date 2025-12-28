@@ -25,6 +25,7 @@ spec:
     # Define a volume for the Docker socket
     - name: dockersock
       hostPath:
+      
         path: /var/run/docker.sock
             """
         }
@@ -48,17 +49,19 @@ stages {
                 sh './gradlew test'
             }
         }
-        stage('Create Image') {
-            steps {
-                container('docker') {
-                echo 'Create Container Image..'
-                sh 'docker --version'
-                echo "Current workspace is ${env.WORKSPACE}"
-                script {
-                    def currentDir = pwd()
-                    echo "Current working directory is: ${currentDir}"
-                }
-                sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
+        node('jenkins-agent-build') {
+            stage('Create Image') {
+                steps {
+                    container('docker') {
+                    echo 'Create Container Image..'
+                    sh 'docker --version'
+                    echo "Current workspace is ${env.WORKSPACE}"
+                    script {
+                        def currentDir = pwd()
+                        echo "Current working directory is: ${currentDir}"
+                    }
+                    sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
+                    }
                 }
             }
         }
