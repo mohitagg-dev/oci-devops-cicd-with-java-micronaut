@@ -1,6 +1,7 @@
 pipeline {
     agent {
         kubernetes {
+            serviceAccount: "jenkins-admin"
             // Define the Kubernetes Pod YAML inline
             yaml """
 apiVersion: v1
