@@ -31,14 +31,18 @@ pipeline {
                 script {
                     def dockerHome = tool 'docker'
                     env.PATH = "${dockerHome}/bin:${env.PATH}"
-                    /*sh 'getent group docker || groupadd docker'*/
+                    /*sh 'getent group docker || groupadd docker'
                     sh 'usermod -aG docker jenkins'
-                    echo 'Jenkins user added to the docker group. Permissions updated.'
+                    echo 'Jenkins user added to the docker group. Permissions updated.'*/
+                    
+                    def customImage = docker.build("demo-repo/java_micronaut_sample:1")
+                    // You can also use "latest" tag after the build
+                    customImage.tag("your-dockerhub-username/my-app:latest")
                 }
                 echo 'Getting Docker installation Path'
                 echo "${env.PATH}"
                 echo 'Create Container Image..'
-                sh 'docker build --pull --rm -t java_micronaut_sample .'
+                //sh 'docker build --pull --rm -t java_micronaut_sample .'
             }
         }
         stage('Push Image') {
