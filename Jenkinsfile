@@ -14,7 +14,7 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
-      command: ['dockerd-entrypoint.sh']
+      command: ['sleep']
       args: ['99d']
       securityContext:
         privileged: true
@@ -61,8 +61,9 @@ stages {
                 }
                 sh "ls -la /var/run/"
                 sh 'docker info' // Test connection
+                sh 'dockerd-entrypoint.sh'
                 sh 'docker status'
-                sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
+                //sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
                 }
             }
         }
