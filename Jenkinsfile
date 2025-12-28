@@ -14,7 +14,7 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
-      command: ['sleep']
+      command: ['/usr/local/bin/dockerd-entrypoint.sh']
       args: ['99d']
       securityContext:
         privileged: true
@@ -22,9 +22,6 @@ spec:
       volumeMounts:
         - name: dockersock
           mountPath: /var/run/docker.sock
-      env:
-        - name: DOCKER_HOST
-          value: tcp://localhost:2375
   volumes:
     # Define a volume for the Docker socket
     - name: dockersock
