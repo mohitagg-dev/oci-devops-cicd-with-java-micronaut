@@ -14,7 +14,7 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
-      command: ['sleep']
+      command: ['dockerd-entrypoint.sh']
       args: ['99d']
       securityContext:
         privileged: true
@@ -26,7 +26,6 @@ spec:
     # Define a volume for the Docker socket
     - name: dockersock
       hostPath:
-      
         path: /var/run/docker.sock
             """
         }
@@ -52,7 +51,7 @@ stages {
         }
         stage('Create Image') {
             steps {
-                container('jnlp') {
+                container('docker') {
                 echo 'Create Container Image..'
                 sh 'docker --version'
                 echo "Current workspace is ${env.WORKSPACE}"
