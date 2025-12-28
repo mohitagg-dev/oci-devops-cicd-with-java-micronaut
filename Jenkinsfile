@@ -62,6 +62,7 @@ stages {
                 }
                 sh "ls -la /var/run/"
                 sh 'docker info' // Test connection
+                sh 'docker status'
                 sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
                 }
             }
