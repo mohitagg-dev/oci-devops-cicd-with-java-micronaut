@@ -8,6 +8,7 @@ kind: Pod
 metadata:
   labels:
     app: "jenkins-agent-build"
+    serviceAccount: "jenkins-admin"
 spec:
   containers:
     - name: docker
