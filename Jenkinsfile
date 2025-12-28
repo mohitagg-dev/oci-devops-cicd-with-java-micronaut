@@ -49,9 +49,15 @@ stages {
             }
         }
         stage('Create Image') {
+            script {
+                    def currentDir = pwd()
+                    echo "Current working directory is: ${currentDir}"
+                }
             steps {
                 echo 'Create Container Image..'
-                sh 'docker build --pull --rm -t java_micronaut_sample .'
+                sh 'docker --version'
+                echo "Current workspace is ${env.WORKSPACE}"
+                sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
             }
         }
         stage('Push Image') {
