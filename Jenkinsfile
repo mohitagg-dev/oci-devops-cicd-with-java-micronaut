@@ -15,7 +15,7 @@ spec:
     - name: docker
       image: docker:20.10.16-dind
       command: ['/usr/local/bin/dockerd-entrypoint.sh']
-      args: ['99d']
+      //args: ['99d']
       securityContext:
         privileged: true
       # Mount the Docker socket if performing Docker-in-Docker builds
