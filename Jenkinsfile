@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    //agent any
+    agent {
+        docker {
+            image 'docker:dind' // Uses the Docker-in-Docker approach within the pipeline
+            label 'docker-agent' // Only runs on agents with Docker capability
+        }
+    }
 
     stages {
         stage('Checkout') {
