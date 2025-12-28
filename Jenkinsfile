@@ -50,6 +50,7 @@ stages {
         }
         stage('Create Image') {
             steps {
+                container('docker') {
                 echo 'Create Container Image..'
                 sh 'docker --version'
                 echo "Current workspace is ${env.WORKSPACE}"
@@ -58,6 +59,7 @@ stages {
                     echo "Current working directory is: ${currentDir}"
                 }
                 sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
+                }
             }
         }
         stage('Push Image') {
