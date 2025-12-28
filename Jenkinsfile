@@ -49,19 +49,19 @@ stages {
                 sh './gradlew test'
             }
         }
-        node('jenkins-agent-build') {
-            stage('Create Image') {
-                steps {
-                    container('docker') {
-                    echo 'Create Container Image..'
-                    sh 'docker --version'
-                    echo "Current workspace is ${env.WORKSPACE}"
-                    script {
-                        def currentDir = pwd()
-                        echo "Current working directory is: ${currentDir}"
-                    }
-                    sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
-                    }
+        stage('Create Image') {
+            steps {
+                container('docker') {
+                echo 'Create Container Image..'
+                sh 'docker --version'
+                echo "Current workspace is ${env.WORKSPACE}"
+                script {
+                    def currentDir = pwd()
+                    echo "Current working directory is: ${currentDir}"
+                }
+                sh "ls -la /var/run/"
+                sh 'docker info' // Test connection
+                sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
                 }
             }
         }
