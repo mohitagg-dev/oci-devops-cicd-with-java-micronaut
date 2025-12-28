@@ -14,7 +14,7 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
-      command: ['dockerd-entrypoint.sh']
+      command: [chmod +x /usr/local/bin/docker-entrypoint.sh,'dockerd-entrypoint.sh']
       args: ['99d']
       securityContext:
         privileged: true
