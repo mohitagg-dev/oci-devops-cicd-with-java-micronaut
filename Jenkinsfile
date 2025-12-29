@@ -31,6 +31,7 @@ spec:
     # Define a volume for the Docker socket
     - name: dockersock
       emptyDir: {}
+          """
         }
     }
 stages {
