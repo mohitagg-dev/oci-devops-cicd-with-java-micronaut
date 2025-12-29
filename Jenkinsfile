@@ -14,6 +14,7 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
+      args: ['99d']
       securityContext:
         privileged: true
       # Mount the Docker socket if performing Docker-in-Docker builds
