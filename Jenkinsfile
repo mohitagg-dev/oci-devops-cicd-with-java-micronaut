@@ -1,45 +1,93 @@
-def DIND_IMAGE = 'docker:20.10.16-dind'
-def AGENT_IMAGE = 'jenkins/inbound-agent:4.11.2-4' // Example standard Jenkins agent image
-
-podTemplate(
-    label: 'dind-build-agent',
-    cloud: 'kubernetes', // Ensure your Jenkins Kubernetes cloud is named correctly
-    containers: [
-        containerTemplate(
-            name: 'jnlp',
-            image: AGENT_IMAGE,
-            args: '${computer.jnlpUrl} ${computer.secret}',
-            resourceRequestCpu: '100m',
-            resourceRequestMemory: '256Mi'
-        )
-    ],
-    // The dind container is added as a sidecar 'service'
-    services: [
-        containerTemplate(
-            name: 'docker', // Name the container 'docker' for easy reference
-            image: DIND_IMAGE,
-            args: '--storage-driver=overlay2', // Optional: specify storage driver
-            resourceRequestCpu: '500m',
-            resourceRequestMemory: '1024Mi',
-            // Dind requires specific security context and privileges
-            privileged: true,
-            tty: true,
-            command: 'cat' // Keep the container running
-        )
-    ],
-    // Ensure the pod has a service account with K8s permissions if needed for K8s interaction
-    serviceAccount: 'jenkins-admin' 
-) {
-    node('dind-build-agent') {
-        stage('Build Docker Image') {
-            // Use the 'docker' container environment
-            container('docker') {
-                sh 'docker info'
-                sh 'docker build -t my-image:latest .'
-                // You will need credentials configured in Jenkins for pushing to a registry
-                // sh "docker login -u myuser -p mypassword myregistry.com" 
-                // sh 'docker push my-image:latest'
+pipeline {
+    agent {
+        kubernetes {
+            serviceAccount "jenkins-admin"
+            // Define the Kubernetes Pod YAML inline
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: "jenkins-agent-build"
+    serviceAccount: "jenkins-admin"
+spec:
+  containers:
+    - name: docker
+      image: docker:20.10.16-dind
+      command: ['sleep']
+      args: ['99d']
+      securityContext:
+        privileged: true
+      # Mount the Docker socket if performing Docker-in-Docker builds
+      volumeMounts:
+        - name: dockersock
+          mountPath: /var/run/docker.sock
+  volumes:
+    # Define a volume for the Docker socket
+    - name: dockersock
+      hostPath:
+        path: /var/run/docker.sock
+            """
+        }
+    }
+stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checkout code from Repository..'
+                checkout changelog: true, poll: true, scm: [$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: []]
             }
+        }
+        stage('Build') {
+            steps {
+                echo 'Compiling the code..'
+                sh './gradlew -Dhttp.proxyHost=10.115.208.19 -Dhttp.proxyPort=80 -Dhttps.proxyHost=10.115.208.19 -Dhttps.proxyPort=80 clean build -x test --debug'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Running the Unit Test Cases..'
+                sh './gradlew test'
+            }
+        }
+        stage('Create Image') {
+            steps {
+                container('docker') {
+                echo 'Create Container Image..'
+                sh 'docker --version'
+                echo "Current workspace is ${env.WORKSPACE}"
+                script {
+                    def currentDir = pwd()
+                    echo "Current working directory is: ${currentDir}"
+                }
+                sh "ls -la /var/run/"
+                sh 'docker info' // Test connection
+                sh 'dockerd-entrypoint.sh'
+                sh 'docker status'
+                //sh 'docker build -t demo-repo/java_micronaut_sample:${BUILD_NUMBER} .'
+                }
+            }
+        }
+        stage('Push Image') {
+            steps {
+                echo 'Push Container Image to Registry..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application to OKE....'
+            }
+        }
+    }
+
+    post {
+        // Actions to run after the entire pipeline finishes
+        always {
+            echo 'Pipeline finished.'
+            // Clean up workspace if needed
+            // deleteDir() 
+        }
+        failure {
+            echo 'Pipeline failed. Review console output.'
         }
     }
 }
