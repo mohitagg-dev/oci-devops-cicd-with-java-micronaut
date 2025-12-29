@@ -14,8 +14,15 @@ spec:
   containers:
     - name: docker
       image: docker:20.10.16-dind
+      command: ['sleep']
+      args: ['99d']
       securityContext:
         privileged: true
+      ports:
+      - containerPort: 2376
+      env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
       # Mount the Docker socket if performing Docker-in-Docker builds
       volumeMounts:
         - name: dockersock
