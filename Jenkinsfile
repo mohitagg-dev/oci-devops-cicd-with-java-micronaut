@@ -26,13 +26,11 @@ spec:
       # Mount the Docker socket if performing Docker-in-Docker builds
       volumeMounts:
         - name: dockersock
-          mountPath: /var/run/docker.sock
+          mountPath: /usr/local/lib/docker
   volumes:
     # Define a volume for the Docker socket
     - name: dockersock
-      hostPath:
-        path: /var/run/docker.sock
-            """
+      emptyDir: {}
         }
     }
 stages {
