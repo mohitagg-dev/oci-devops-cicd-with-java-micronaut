@@ -13,20 +13,7 @@ podTemplate(
             resourceRequestMemory: '256Mi'
         )
     ],
-    // The dind container is added as a sidecar 'service'
-    services: [
-        containerTemplate(
-            name: 'docker', // Name the container 'docker' for easy reference
-            image: DIND_IMAGE,
-            args: '--storage-driver=overlay2', // Optional: specify storage driver
-            resourceRequestCpu: '500m',
-            resourceRequestMemory: '1024Mi',
-            // Dind requires specific security context and privileges
-            privileged: true,
-            tty: true,
-            command: 'cat' // Keep the container running
-        )
-    ],
+    
     // Ensure the pod has a service account with K8s permissions if needed for K8s interaction
     serviceAccount: 'jenkins-admin' 
 ) {
